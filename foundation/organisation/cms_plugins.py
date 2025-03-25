@@ -1,10 +1,9 @@
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from cms.models.pluginmodel import CMSPlugin
 from cms.extensions.extension_pool import extension_pool
-
-from sorl.thumbnail import get_thumbnail
 
 from .models import (Project, Theme, FeaturedTheme, FeaturedProject,
                      ProjectList, NetworkGroup, NetworkGroupList, WorkingGroup,
@@ -22,12 +21,10 @@ class FeaturedThemePlugin(CMSPluginBase):
         return 'Theme: %s' % instance.theme.name
 
     def icon_src(self, instance):
-        im = get_thumbnail(instance.theme.picture, '50x50', quality=99)
-        return im.url
+        return settings.STATIC_URL + "cms/img/icons/plugins/snippet.png"
 
     def render(self, context, instance, placeholder):
-        context = super(FeaturedThemePlugin, self)\
-            .render(context, instance, placeholder)
+        context = super().render(context, instance, placeholder)
 
         context['object'] = instance.theme
         return context
@@ -43,8 +40,7 @@ class FeaturedProjectPlugin(CMSPluginBase):
     render_template = "organisation/project_featured.html"
 
     def render(self, context, instance, placeholder):
-        context = super(FeaturedProjectPlugin, self)\
-            .render(context, instance, placeholder)
+        context = super().render(context, instance, placeholder)
 
         context['project'] = instance.project
         return context
@@ -60,8 +56,7 @@ class ProjectListPlugin(CMSPluginBase):
     render_template = "organisation/project_list_plugin.html"
 
     def render(self, context, instance, placeholder):
-        context = super(ProjectListPlugin, self)\
-            .render(context, instance, placeholder)
+        context = super().render(context, instance, placeholder)
 
         results = Project.objects.all()
 
@@ -85,8 +80,7 @@ class ThemesPlugin(CMSPluginBase):
     render_template = "organisation/theme_list.html"
 
     def render(self, context, instance, placeholder):
-        context = super(ThemesPlugin, self)\
-            .render(context, instance, placeholder)
+        context = super().render(context, instance, placeholder)
         context['object_header'] = _("Themes")
         context['object_list'] = Theme.objects.all()
         return context
@@ -102,9 +96,14 @@ class NetworkGroupFlagsPlugin(CMSPluginBase):
     render_template = "organisation/networkgroup_flags.html"
     text_enabled = True
 
+    def icon_alt(self, instance):
+        return 'Network Group Flags: %s' % instance.theme.name
+
+    def icon_src(self, instance):
+        return settings.STATIC_URL + "cms/img/icons/plugins/snippet.png"
+
     def render(self, context, instance, placeholder):
-        context = super(NetworkGroupFlagsPlugin, self)\
-            .render(context, instance, placeholder)
+        context = super().render(context, instance, placeholder)
 
         context['title'] = instance.get_group_type_display()
         context['countries'] = NetworkGroup.objects.countries().filter(
@@ -123,9 +122,14 @@ class WorkingGroupPlugin(CMSPluginBase):
     render_template = "organisation/workinggroup_shortlist.html"
     text_enabled = True
 
+    def icon_alt(self, instance):
+        return 'Working Groups'
+
+    def icon_src(self, instance):
+        return settings.STATIC_URL + "cms/img/icons/plugins/snippet.png"
+
     def render(self, context, instance, placeholder):
-        context = super(WorkingGroupPlugin, self)\
-            .render(context, instance, placeholder)
+        context = super().render(context, instance, placeholder)
 
         context['workinggroups'] = WorkingGroup.objects.active()
         return context
@@ -141,8 +145,7 @@ class SignupFormPlugin(CMSPluginBase):
     render_template = "organisation/signup_form.html"
 
     def render(self, context, instance, placeholder):
-        context = super(SignupFormPlugin, self)\
-            .render(context, instance, placeholder)
+        context = super().render(context, instance, placeholder)
 
         context['title'] = instance.title
         context['description'] = instance.description

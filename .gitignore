@@ -9,6 +9,7 @@ pip-log.txt
 
 # Unit test / coverage reports
 .coverage
+coverage.xml
 .tox
 nosetests.xml
 htmlcov
@@ -26,11 +27,11 @@ node_modules
 media
 staticfiles
 
-# Packages installed by bower
-static/vendor/
-
 # Extra
 logfile
+whoosh_index
 .projectile
 .env
-whoosh_index
+.env.staging
+.env.production
+assets

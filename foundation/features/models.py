@@ -7,11 +7,10 @@ class Feature(models.Model):
 
     title = models.CharField(max_length=100)
     text = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='features/images',
-                              blank=False)
+    # image = models.ImageField(upload_to='features/images', blank=False)
     link = models.URLField(blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     class Meta:
